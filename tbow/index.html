@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T-BOW® | The Swiss Original</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* --- ULTRA-HIGH CONTRAST & APPLE PALETTE (T-BOW Orange) --- */
+        :root {
+            /* DARK MODE (Pure Premium Black) */
+            --bg-color: #000000;
+            --text-color: #ffffff;
+            --text-muted: #86868b;
+            --card-bg: #111113;
+            --border-color: #333333;
+            --accent: #FF6B00;    /* T-BOW Ultra Orange */
+            --easing: cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        [data-theme="light"] {
+            /* LIGHT MODE (Pure Crisp White) */
+            --bg-color: #ffffff;
+            --text-color: #000000;
+            --text-muted: #6e6e73;
+            --card-bg: #f5f5f7;
+            --border-color: #e5e5e5;
+            --accent: #E65C00;
+        }
+
+        /* --- GLOBAL RESET & SMOOTHNESS --- */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            letter-spacing: -0.01em;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            transition: background-color 0.6s var(--easing), color 0.6s var(--easing);
+        }
+
+        /* --- TYPOGRAPHY --- */
+        h1 {
+            font-size: clamp(2.5rem, 6vw, 5.5rem);
+            font-weight: 700;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            margin-bottom: 24px;
+        }
+
+        h2 {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.15;
+        }
+
+        h3 {
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        p.lead {
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            color: var(--text-muted);
+            max-width: 640px;
+            font-weight: 400;
+            line-height: 1.5;
+            margin-bottom: 32px;
+        }
+
+        /* --- PREMIUM HEADER & NAV --- */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(var(--bg-color), 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 1000;
+            padding: 16px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            cursor: pointer;
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 36px;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            opacity: 0.6;
+            cursor: pointer;
+            transition: opacity 0.3s var(--easing), color 0.3s ease;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            opacity: 1;
+            color: var(--accent);
+        }
+
+        .controls {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-icon {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 13px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s var(--easing);
+        }
+
+        .btn-icon:hover {
+            background: var(--text-color);
+            color: var(--bg-color);
+            border-color: var(--text-color);
+        }
+
+        /* --- SMART SCROLL REVEAL --- */
+        .reveal-item {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1.2s var(--easing), transform 1.2s var(--easing);
+        }
+
+        .reveal-item.triggered {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- STRUCTURE & CONTAINER --- */
+        main {
+            padding: 140px 40px 100px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* --- HERO --- */
+        .hero-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            min-height: 70vh;
+            margin-bottom: 120px;
+        }
+
+        .btn-apple {
+            display: inline-block;
+            background: var(--text-color);
+            color: var(--bg-color);
+            padding: 14px 32px;
+            border-radius: 100px;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            font-size: 15px;
+            transition: transform 0.3s var(--easing), opacity 0.3s var(--easing), box-shadow 0.3s ease;
+        }
+
+        .btn-apple:hover {
+            transform: scale(1.02);
+            opacity: 0.9;
+            box-shadow: 0 10px 20px rgba(255, 107, 0, 0.2);
+        }
+
+        /* --- 3D ANIMATION CSS (HERO PRODUCT) --- */
+        .apple-3d-container {
+            perspective: 1200px;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .apple-3d-element {
+            width: 100%;
+            transform-style: preserve-3d;
+            position: relative;
+            border-radius: 20px;
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            z-index: 2;
+        }
+
+        .tbow-image {
+            width: 100%;
+            height: auto;
+            border-radius: 20px;
+            object-fit: contain; /* Damit das Bild nicht abgeschnitten wird */
+            display: block;
+            background: var(--card-bg); /* Hintergrund für das Bild, falls es nicht freigestellt ist */
+        }
+
+        .dynamic-shadow {
+            position: absolute;
+            bottom: -30px;
+            width: 70%;
+            height: 20px;
+            background: radial-gradient(ellipse at center, rgba(255, 107, 0, 0.6) 0%, transparent 70%);
+            filter: blur(15px);
+            transition: transform 0.4s ease-out, opacity 0.4s ease-out;
+            z-index: 1;
+            opacity: 0.4;
+        }
+
+        .glare {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+            background: linear-gradient(105deg, rgba(255,255,255,0) 30%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 70%);
+            mix-blend-mode: overlay;
+            opacity: 0;
+            transition: opacity 0.4s ease, background-position 0.1s ease;
+            background-size: 200% 200%;
+            pointer-events: none;
+        }
+
+        /* --- GRID SYSTEM --- */
+        .apple-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 32px;
+        }
+
+        .apple-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 48px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 320px;
+            transition: border-color 0.4s var(--easing);
+        }
+
+        .apple-card:hover {
+            border-color: var(--accent);
+        }
+
+        .card-meta {
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+
+        .apple-img-wrap {
+            width: 100%;
+            height: 240px;
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--bg-color);
+            margin-bottom: 24px;
+        }
+
+        .apple-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* --- QUOTE --- */
+        .quote-container {
+            max-width: 900px;
+            margin: 100px auto;
+            text-align: center;
+        }
+
+        .apple-quote {
+            font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+            font-weight: 600;
+            line-height: 1.25;
+            letter-spacing: -0.02em;
+            margin-bottom: 40px;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            border-top: 1px solid var(--border-color);
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 48px 40px;
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        @media(max-width: 1024px) {
+            .hero-layout { grid-template-columns: 1fr; gap: 40px; }
+            .nav-links { display: none; }
+            header { padding: 16px 24px; }
+        }
+    </style>
+</head>
+<body data-theme="dark">
+
+    <header>
+        <div class="logo" onclick="showPage('home')">T-BOW®</div>
+        <div class="nav-links">
+            <a onclick="showPage('home')" id="nav-home" class="active" data-i18n="nav_home">Home</a>
+            <a onclick="showPage('areas')" id="nav-areas" data-i18n="nav_areas">Trainingsbereiche</a>
+            <a onclick="showPage('story')" id="nav-story" data-i18n="nav_story">Story</a>
+            <a onclick="showPage('shop')" id="nav-shop" data-i18n="nav_shop">Produkte</a>
+        </div>
+        <div class="controls">
+            <button class="btn-icon" id="langToggle" onclick="toggleLang()">EN</button>
+            <button class="btn-icon" id="themeToggle" onclick="toggleTheme()">☀</button>
+        </div>
+    </header>
+
+    <main>
+        <section id="home" class="page active">
+            <div class="hero-layout reveal-item">
+                <div>
+                    <h1 data-i18n="hero_title">T-BOW®.<br>Das Schweizer Original.</h1>
+                    <p class="lead" data-i18n="hero_desc">Der T-BOW® ist das vielseitigste Trainings- und Therapiegerät. Verbessert Kraft, Ausdauer, Beweglichkeit und einzigartig auch die Balance. Beidseitig nutzbar als Step und Schaukel.</p>
+                    <button class="btn-apple" onclick="showPage('areas')" data-i18n="btn_explore">Potenzial entdecken</button>
+                </div>
+                
+                <div class="apple-3d-container" id="tbow-3d-container">
+                    <div class="apple-3d-element" id="tbow-3d-element">
+                        <img src="image_1779a9.jpg" alt="T-BOW Original" class="tbow-image">
+                        <div class="glare" id="tbow-glare"></div>
+                    </div>
+                    <div class="dynamic-shadow"></div>
+                </div>
+            </div>
+
+            <div class="apple-grid" style="margin-top: 60px;">
+                <div class="apple-card reveal-item">
+                    <div>
+                        <div class="card-meta">01</div>
+                        <h3 data-i18n="home_card1_title" style="margin-bottom: 16px;">Kraft & Balance</h3>
+                        <p style="color: var(--text-muted);" data-i18n="home_card1_desc">Individuelle Steigerung durch Einspannen von T-Bands (Widerstandsbändern). Über Lageveränderungen auf dem Bogen werden Übungen erleichtert oder erschwert.</p>
+                    </div>
+                </div>
+                <div class="apple-card reveal-item">
+                    <div>
+                        <div class="card-meta">02</div>
+                        <h3 data-i18n="home_card2_title" style="margin-bottom: 16px;">Anatomisch Korrekt</h3>
+                        <p style="color: var(--text-muted);" data-i18n="home_card2_desc">Die Bogenform stützt den Rücken anatomisch korrekt. Erhöht das Bewegungsausmass für effektivere Kräftigung der Bauchmuskeln ohne Wegverlust.</p>
+                    </div>
+                </div>
+                <div class="apple-card reveal-item">
+                    <div>
+                        <div class="card-meta">03</div>
+                        <h3 data-i18n="home_card3_title" style="margin-bottom: 16px;">Platzsparend</h3>
+                        <p style="color: var(--text-muted);" data-i18n="home_card3_desc">Für jedes Alter geeignet und auf kleinstem Raum stapelbar. Ideal für Homefitness, Personal Training und Groupfitness.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="areas" class="page">
+            <div class="reveal-item" style="margin-bottom: 80px;">
+                <h2 data-i18n="areas_title">Trainingsbereiche</h2>
+                <p class="lead" data-i18n="areas_desc">Von der Physiotherapie bis zum Spitzensport – ein Bogen für jedes Ziel.</p>
+            </div>
+
+            <div class="apple-grid">
+                <div class="apple-card reveal-item">
+                    <div>
+                        <h3 data-i18n="area_physio_title" style="margin-bottom: 16px;">Physiotherapie & Reha</h3>
+                        <p style="color: var(--text-muted);" data-i18n="area_physio_desc">Segmentale Mobilisation und Dehnung. Blockierte Wirbel sinken beim Rücklings-Darüberliegen nicht ein (wie beim Gymnastikball), sondern erhalten einen leichten mobilisierenden Druck. Handgelenkschonend im Vierfüssler (Winkel &lt; 90°).</p>
+                    </div>
+                </div>
+                <div class="apple-card reveal-item">
+                    <div>
+                        <h3 data-i18n="area_sport_title" style="margin-bottom: 16px;">Spitzensport</h3>
+                        <p style="color: var(--text-muted);" data-i18n="area_sport_desc">Profitiere mehrfach: Überallhin mitnehmen, im Hotelzimmer trainieren, über Balance die tiefenstabilisierenden Muskeln anregen, nach harten Trainings entspannen und einseitige Belastungen ausgleichen.</p>
+                    </div>
+                </div>
+                <div class="apple-card reveal-item">
+                    <div>
+                        <h3 data-i18n="area_fitness_title" style="margin-bottom: 16px;">Fitness & Group</h3>
+                        <p style="color: var(--text-muted);" data-i18n="area_fitness_desc">Kombiniere T-BOW® mit HIT Training, Pilates, Yoga, Bauch-Beine-Po oder Aerobics. Trainiert funktionell die Verschraubung der Beinlängsachse (Pronation).</p>
+                    </div>
+                </div>
+                <div class="apple-card reveal-item">
+                    <div>
+                        <h3 data-i18n="area_schools_title" style="margin-bottom: 16px;">Schulen & Senioren</h3>
+                        <p style="color: var(--text-muted);" data-i18n="area_schools_desc">Kinder lieben den T-BOW® für Spiele, Staffetten, Akrobatik und als Sprunginsel. Ideal für Senioren zur Sturzprophylaxe, zum Strecken der Gelenke und für Balance-Training in der Schaukelposition.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="story" class="page">
+            <div class="quote-container reveal-item">
+                <div class="card-meta" data-i18n="story_sub">Die Idee aus der Praxis</div>
+                <div class="apple-quote" data-i18n="story_p1">"Ich habe immer schon auf runden Unterlagen, wie dem grossen Gymnastikball, meine Patienten therapiert. Da ein Gymnastikball schlecht Platz in meinem kleinen Auto hatte, suchte ich nach etwas, das schlicht die Bogenform hatte. Damit war die Idee des T-BOW® geboren."</div>
+                <p class="lead" style="margin: 0 auto; font-size: 16px;" data-i18n="story_p2">Der T-BOW® ist eine patentierte Schweizer Erfindung von Sandra Bonacina (Physiotherapeutin, Hochschulsportlehrerin & Dozentin ETH Zürich). Er wurde zusammen mit Viktor Denoth entwickelt und intensiv an der UNI/ETH Zürich und im ASVZ Zürich getestet.</p>
+            </div>
+            
+            <div style="width: 100%; height: 450px; border-radius: 24px; overflow: hidden; background: var(--card-bg);" class="reveal-item">
+                <img src="https://images.unsplash.com/photo-1534190239940-9ba8944ea261?auto=format&fit=crop&w=1200&q=80" alt="Zürich ETH Vibe" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+        </section>
+
+        <section id="shop" class="page">
+            <div class="reveal-item" style="margin-bottom: 60px;">
+                <h2 data-i18n="shop_title">Das Equipment</h2>
+                <p class="lead" data-i18n="shop_desc">Wähle deinen T-BOW® in verschiedenen Farben. (z.B. eis-lila, hellgrün, orange, schwarz, weiss).</p>
+            </div>
+
+            <div class="apple-grid">
+                <div class="apple-card reveal-item" style="padding: 24px;">
+                    <div class="apple-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?auto=format&fit=crop&w=600&q=80" alt="T-BOW Farben">
+                    </div>
+                    <div>
+                        <h3 data-i18n="prod1_title">T-BOW® Classic</h3>
+                        <p style="color:var(--text-muted); font-size: 14px; margin: 8px 0 24px 0;" data-i18n="prod1_desc">Erhältlich u.a. in eis-lila, hellgrün, orange, schwarz.</p>
+                        <button class="btn-apple" style="width: 100%; text-align: center;" data-i18n="btn_order">Bestellen</button>
+                    </div>
+                </div>
+                
+                <div class="apple-card reveal-item" style="padding: 24px;">
+                    <div class="apple-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1610701596007-11502861dcfa?auto=format&fit=crop&w=600&q=80" alt="Echtholz">
+                    </div>
+                    <div>
+                        <h3 data-i18n="prod2_title">T-BOW® Echtholz</h3>
+                        <p style="color:var(--text-muted); font-size: 14px; margin: 8px 0 24px 0;" data-i18n="prod2_desc">Lust auf einen edlen T-BOW® in Echtholz?</p>
+                        <button class="btn-apple" style="width: 100%; text-align: center;" data-i18n="btn_order">Bestellen</button>
+                    </div>
+                </div>
+
+                <div class="apple-card reveal-item" style="padding: 24px;">
+                    <div class="apple-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1598289431512-b97b0917affc?auto=format&fit=crop&w=600&q=80" alt="T-Bands">
+                    </div>
+                    <div>
+                        <h3 data-i18n="prod3_title">T-Bands</h3>
+                        <p style="color:var(--text-muted); font-size: 14px; margin: 8px 0 24px 0;" data-i18n="prod3_desc">Widerstandsbänder zur einfachen individuellen Steigerung.</p>
+                        <button class="btn-apple" style="width: 100%; text-align: center;" data-i18n="btn_order">Bestellen</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="reveal-item" style="margin-top: 56px; padding: 32px; background: var(--card-bg); border-radius: 24px; text-align: center; border: 1px solid var(--border-color);">
+                <p style="font-weight: 600; font-size: 15px; color: var(--accent);" data-i18n="shop_action">Aktuelle Aktion: T-BOW® weiss mit Wunschfarbe Matte für 149.- anstelle 165.- (Gültig solange Vorrat).</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="reveal-item">
+        <span data-i18n="footer_copy">© 2026 T-BOW International. SABOFIT, Wangen ZH, Schweiz.</span>
+        <a href="mailto:sabofit@t-bow.ch" style="color: inherit; text-decoration: none;" data-i18n="footer_contact">sabofit@t-bow.ch</a>
+    </footer>
+
+    <script>
+        // 1. Scroll Animations
+        const revealOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('triggered');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, revealOptions);
+
+        function initScrollAnimations() {
+            document.querySelectorAll('.reveal-item').forEach(item => {
+                item.classList.remove('triggered');
+                revealObserver.observe(item);
+            });
+        }
+
+        // 2. 3D Hover Parallax Logic
+        function init3DEffect() {
+            const container = document.getElementById('tbow-3d-container');
+            const element = document.getElementById('tbow-3d-element');
+            const glare = document.getElementById('tbow-glare');
+            const shadow = document.querySelector('.dynamic-shadow');
+
+            if(!container) return; // Falls Element nicht existiert, abbrechen
+
+            container.addEventListener('mousemove', (e) => {
+                const rect = container.getBoundingClientRect();
+                
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+
+                const rotateX = ((y - centerY) / centerY) * -15; 
+                const rotateY = ((x - centerX) / centerX) * 15;
+
+                const glareX = (x / rect.width) * 100;
+                const glareY = (y / rect.height) * 100;
+
+                element.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
+                
+                glare.style.opacity = '1';
+                glare.style.backgroundPosition = `${glareX}% ${glareY}%`;
+
+                shadow.style.transform = `translateX(${rotateY * -1}px) translateY(${rotateX * 1}px) scale(0.9)`;
+                shadow.style.opacity = '0.8';
+            });
+
+            container.addEventListener('mouseleave', () => {
+                element.style.transform = `rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                glare.style.opacity = '0';
+                shadow.style.transform = `translateX(0px) translateY(0px) scale(1)`;
+                shadow.style.opacity = '0.4';
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            initScrollAnimations();
+            init3DEffect();
+        });
+
+        // 3. Navigation
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            
+            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+            const activeLink = document.getElementById('nav-' + pageId);
+            if(activeLink) activeLink.classList.add('active');
+            
+            window.scrollTo({ top: 0, behavior: 'instant' });
+            initScrollAnimations();
+        }
+
+        // 4. Theme & Language Toggle
+        let isDark = true;
+        function toggleTheme() {
+            isDark = !isDark;
+            document.body.setAttribute('data-theme', isDark ? 'dark' : 'light');
+            document.getElementById('themeToggle').innerText = isDark ? '☀' : '☾';
+        }
+
+        const dict = {
+            "de": {
+                "nav_home": "Home", "nav_areas": "Trainingsbereiche", "nav_story": "Story", "nav_shop": "Produkte",
+                "hero_title": "T-BOW®.<br>Das Schweizer Original.",
+                "hero_desc": "Der T-BOW® ist das vielseitigste Trainings- und Therapiegerät. Verbessert Kraft, Ausdauer, Beweglichkeit und einzigartig auch die Balance. Beidseitig nutzbar als Step und Schaukel.",
+                "btn_explore": "Potenzial entdecken",
+                "home_card1_title": "Kraft & Balance", "home_card1_desc": "Individuelle Steigerung durch Einspannen von T-Bands (Widerstandsbändern). Über Lageveränderungen auf dem Bogen werden Übungen erleichtert oder erschwert.",
+                "home_card2_title": "Anatomisch Korrekt", "home_card2_desc": "Die Bogenform stützt den Rücken anatomisch korrekt. Erhöht das Bewegungsausmass für effektivere Kräftigung der Bauchmuskeln ohne Wegverlust.",
+                "home_card3_title": "Platzsparend", "home_card3_desc": "Für jedes Alter geeignet und auf kleinstem Raum stapelbar. Ideal für Homefitness, Personal Training und Groupfitness.",
+                "areas_title": "Trainingsbereiche", "areas_desc": "Von der Physiotherapie bis zum Spitzensport – ein Bogen für jedes Ziel.",
+                "area_physio_title": "Physiotherapie & Reha", "area_physio_desc": "Segmentale Mobilisation und Dehnung. Blockierte Wirbel sinken beim Rücklings-Darüberliegen nicht ein (wie beim Gymnastikball), sondern erhalten einen leichten mobilisierenden Druck. Handgelenkschonend im Vierfüssler (Winkel < 90°).",
+                "area_sport_title": "Spitzensport", "area_sport_desc": "Profitiere mehrfach: Überallhin mitnehmen, im Hotelzimmer trainieren, über Balance die tiefenstabilisierenden Muskeln anregen, nach harten Trainings entspannen und einseitige Belastungen ausgleichen.",
+                "area_fitness_title": "Fitness & Group", "area_fitness_desc": "Kombiniere T-BOW® mit HIT Training, Pilates, Yoga, Bauch-Beine-Po oder Aerobics. Trainiert funktionell die Verschraubung der Beinlängsachse (Pronation).",
+                "area_schools_title": "Schulen & Senioren", "area_schools_desc": "Kinder lieben den T-BOW® für Spiele, Staffetten, Akrobatik und als Sprunginsel. Ideal für Senioren zur Sturzprophylaxe, zum Strecken der Gelenke und für Balance-Training in der Schaukelposition.",
+                "story_sub": "Die Idee aus der Praxis",
+                "story_p1": "\"Ich habe immer schon auf runden Unterlagen, wie dem grossen Gymnastikball, meine Patienten therapiert. Da ein Gymnastikball schlecht Platz in meinem kleinen Auto hatte, suchte ich nach etwas, das schlicht die Bogenform hatte. Damit war die Idee des T-BOW® geboren.\"",
+                "story_p2": "Der T-BOW® ist eine patentierte Schweizer Erfindung von Sandra Bonacina (Physiotherapeutin, Hochschulsportlehrerin & Dozentin ETH Zürich). Er wurde zusammen mit Viktor Denoth entwickelt und intensiv an der UNI/ETH Zürich und im ASVZ Zürich getestet.",
+                "shop_title": "Das Equipment", "shop_desc": "Wähle deinen T-BOW® in verschiedenen Farben. (z.B. eis-lila, hellgrün, orange, schwarz, weiss).",
+                "prod1_title": "T-BOW® Classic", "prod1_desc": "Erhältlich u.a. in eis-lila, hellgrün, orange, schwarz.",
+                "prod2_title": "T-BOW® Echtholz", "prod2_desc": "Lust auf einen edlen T-BOW® in Echtholz?",
+                "prod3_title": "T-Bands", "prod3_desc": "Widerstandsbänder zur einfachen individuellen Steigerung.",
+                "btn_order": "Bestellen",
+                "shop_action": "Aktuelle Aktion: T-BOW® weiss mit Wunschfarbe Matte für 149.- anstelle 165.- (Gültig solange Vorrat).",
+                "footer_copy": "© 2026 T-BOW International. SABOFIT, Wangen ZH, Schweiz.", "footer_contact": "sabofit@t-bow.ch"
+            },
+            "en": {
+                "nav_home": "Home", "nav_areas": "Training Areas", "nav_story": "Story", "nav_shop": "Products",
+                "hero_title": "T-BOW®.<br>The Swiss Original.",
+                "hero_desc": "The T-BOW® is the most multi-talented training and therapy tool. Increases strength, endurance, flexibility and unique also balance. Usable on both sides as step and swing.",
+                "btn_explore": "Explore Potential",
+                "home_card1_title": "Strength & Balance", "home_card1_desc": "Stretchbands (T-Bands) are easy fixed and individually improving is possible. Different positions on T-BOW® make exercises easier or harder.",
+                "home_card2_title": "Anatomically Correct", "home_card2_desc": "The arch supports the back anatomically correct. Gives a bigger range of motion for the abs without lost of the way like on the flat floor.",
+                "home_card3_title": "Space Saving", "home_card3_desc": "Workable for all ages and stackable on the smallest place. Perfect for homefitness, personal training and groupfitness.",
+                "areas_title": "Training Areas", "areas_desc": "From physical therapy to top athletes – one bow for every goal.",
+                "area_physio_title": "Physical Therapy & Rehab", "area_physio_desc": "Segmental mobilization and stretch. Partly blocked vertebra get a soft mobilising pressure by laying backwards over the T-BOW® and can not sink. Gentle for the wrists on all fours (angle < 90°).",
+                "area_sport_title": "Top Athletes", "area_sport_desc": "Great benefit: Take it everywhere, train in the hotel room, activate deep stabilisation muscles with balance, relax after hard training and compensate one-sided bodywork.",
+                "area_fitness_title": "Fitness & Group", "area_fitness_desc": "Combine T-BOW® with HIT, Pilates, Yoga, bums-tums-legs or Aerobics. Easier to train the functional rotation of the longitudinal leg axis (pronation).",
+                "area_schools_title": "Schools & Seniors", "area_schools_desc": "Kids love the T-BOW® for games, obstacle course, acrobatics and jump tool. Perfect for seniors to prevent falls, straighten joints and train balance in swing position.",
+                "story_sub": "The Idea from Practice",
+                "story_p1": "\"I always treated my patients on round surfaces like the big swissball. Because my car was always too small for transporting the swissball, I was looking after a simple form of a bow. That was the birth of the idea of T-BOW®.\"",
+                "story_p2": "The T-BOW® is a Swiss patented invention of Sandra Bonacina (Physical Therapist, University Sportsteacher & Lecturer ETH Zürich). It was developed with Viktor Denoth and tested at UNI/ETH and ASVZ in Zürich.",
+                "shop_title": "The Equipment", "shop_desc": "Choose your T-BOW® in different colors (e.g. ice-purple, light green, orange, black, white).",
+                "prod1_title": "T-BOW® Classic", "prod1_desc": "Available in ice-purple, light green, orange, black.",
+                "prod2_title": "T-BOW® Real Wood", "prod2_desc": "Desire for a noble T-BOW® in real wood?",
+                "prod3_title": "T-Bands", "prod3_desc": "Stretchbands for easy individual strength improvement.",
+                "btn_order": "Order now",
+                "shop_action": "Action: T-BOW® white with desired mat color for 149.- instead of 165.- (Valid while stocks last).",
+                "footer_copy": "© 2026 T-BOW International. SABOFIT, Wangen ZH, Switzerland.", "footer_contact": "sabofit@t-bow.ch"
+            }
+        };
+
+        let currentLang = "de";
+        function toggleLang() {
+            currentLang = currentLang === "de" ? "en" : "de";
+            document.getElementById('langToggle').innerText = currentLang === "de" ? "EN" : "DE";
+            
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if(dict[currentLang][key]) {
+                    el.innerHTML = dict[currentLang][key];
+                }
+            });
+        }
+    </script>
+</body>
+</html>
